@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# make the script executable
+chmod +x .git/hooks/pre-commit
+
+# run prettier
+echo "🛠 Running Prettier..."
+npm run format
+
+# run eslint
+echo "✨ Running ESLint..."
+npm run lint
+
+# run laravel pint
+echo "🛠 Running Laravel Pint..."
+php vendor/bin/pint
+
+# check if any files have been changed
+if ! git diff --quiet; then
+    echo "❌ Some files have been changed. Please run 'git add .' and commit again."
+    exit 1
+fi
+
+# all files are formatted correctly
+echo "✅ All files are formatted correctly. Committing..."
+exit 0
