@@ -17,6 +17,7 @@
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
@@ -25,7 +26,9 @@
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.7",
         "pestphp/pest-plugin-drift": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.1"
+        "pestphp/pest-plugin-laravel": "^3.1",
+        "rector/rector": "^2.0",
+        "tightenco/duster": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -59,10 +62,22 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
         ],
-        "style": [
+        "style-fe": [
             "npm run format",
-            "npm run lint",
-            "php vendor/bin/pint"
+            "npm run lint"
+        ],
+        "style-be": [
+            "php vendor/bin/duster fix",
+            "php vendor/bin/rector"
+        ],
+        "lint": [
+            "./vendor/bin/duster lint"
+        ],
+        "lint-fix": [
+            "./vendor/bin/duster fix"
+        ],
+        "rector": [
+            "./vendor/bin/rector"
         ]
     },
     "extra": {
