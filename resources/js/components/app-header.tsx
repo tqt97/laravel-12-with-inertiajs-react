@@ -21,6 +21,11 @@ const mainNavItems: NavItem[] = [
         url: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Permission',
+        url: '/permissions',
+        icon: LayoutGrid,
+    },
 ];
 
 const rightNavItems: NavItem[] = [
