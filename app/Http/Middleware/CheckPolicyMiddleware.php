@@ -14,13 +14,8 @@ class CheckPolicyMiddleware
      *
      * @param  Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $policyMethod): Response
+    public function handle(Request $request, Closure $next, string $policyMethod, string $modelClass): Response
     {
-        // Get model name from Controller
-        $controller = class_basename($request->route()->getController());
-        $modelClass = 'App\\Models\\'.str_replace('Controller', '', $controller);
-
-        // Check Policy
         if (! Gate::allows($policyMethod, $modelClass)) {
             abort(Response::HTTP_FORBIDDEN, 'This action is unauthorized.');
         }

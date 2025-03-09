@@ -16,8 +16,12 @@ export const Toast: React.FC = () => {
     const animationFrameRef = useRef<number | null>(null);
 
     const startCountdown = useCallback(() => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+        }
 
         const startTime = performance.now();
 
@@ -42,7 +46,9 @@ export const Toast: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (!flash?.success && !flash?.error) return;
+        if (!flash?.success && !flash?.error) {
+            return;
+        }
 
         const text = flash.success || flash.error || '';
         let type: 'success' | 'error' | 'delete' = flash.error ? 'error' : 'success';
@@ -60,11 +66,17 @@ export const Toast: React.FC = () => {
     const handleClose = () => {
         setIsVisible(false);
         setTimeout(() => setMessage(null), 300);
-        if (timerRef.current) clearTimeout(timerRef.current);
-        if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+        }
     };
 
-    if (!message?.text) return null;
+    if (!message?.text) {
+        return null;
+    }
 
     return (
         <div

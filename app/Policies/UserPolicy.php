@@ -48,7 +48,7 @@ class UserPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete_users') || false;
+        return $user->hasPermissionTo('delete_users');
     }
 
     /**

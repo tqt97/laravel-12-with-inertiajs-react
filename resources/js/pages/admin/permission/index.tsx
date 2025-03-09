@@ -2,121 +2,36 @@ import Heading from '@/components/heading';
 import { PermissionItem } from '@/components/permission/permission-item';
 import { AddPermissionModal } from '@/components/permission/permission-modal';
 import { Toast } from '@/components/toast';
-import { groupPermissionsByModel, validatePermission } from '@/helpers';
+import { usePermissions } from '@/hooks/usePermissions';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Permission } from '@/types';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { Head, router } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react';
-import { FormEvent, useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Permission', href: '/permissions' }];
 
 export default function Permission({ permissions }: { permissions: Permission[] }) {
-    const [currentModelForAdd, setCurrentModelForAdd] = useState<string | null>(null);
-    const [processingDelete, setProcessingDelete] = useState<number | null>(null);
-    const [processingUpdate, setProcessingUpdate] = useState<boolean>(false);
-    const [processingAdd, setProcessingAdd] = useState<boolean>(false);
-    const [editingPermission, setEditingPermission] = useState<{ id: number; value: string } | null>(null);
-    const [highlightedId, setHighlightedId] = useState<number | null>(null);
-    const [errors, setErrors] = useState<{ name?: string; model?: string; permissionId?: string }>({});
-    const [name, setName] = useState<string>('');
+    const {
+        currentModelForAdd,
+        setCurrentModelForAdd,
+        processingDelete,
+        processingUpdate,
+        processingAdd,
+        editingPermission,
+        setEditingPermission,
+        highlightedId,
+        errors,
+        name,
+        setName,
+        groupedPermissions,
+        cancel,
+        addPermission,
+        updatePermission,
+        deletePermission,
+    } = usePermissions(permissions);
 
-    // use memo to avoid unnecessary re-renders
-    const groupedPermissions = useMemo(() => groupPermissionsByModel(permissions), [permissions]);
     const models = Object.keys(groupedPermissions).sort();
-
-    const cancel = () => {
-        setName('');
-        setEditingPermission(null);
-        setHighlightedId(null);
-        setErrors({});
-        setCurrentModelForAdd(null);
-        setProcessingUpdate(false);
-        setProcessingAdd(false);
-        setProcessingDelete(null);
-    };
-    const refreshPermissions = () => {
-        router.reload({ only: ['permissions'] }); // 🔥 Chỉ gọi lại prop "permissions"
-    };
-    const addPermission = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const errors = validatePermission(name, currentModelForAdd ?? undefined);
-        if (errors) {
-            setErrors(errors);
-            return;
-        }
-        const permissionName = `${name.trim().toLowerCase()}_${currentModelForAdd}`;
-        setProcessingAdd(true);
-
-        router.post(
-            route('permissions.store'),
-            { name: permissionName, is_custom: true },
-            {
-                preserveScroll: true,
-                onError: (err) => {
-                    if (err.global) {
-                        cancel();
-                    } else {
-                        setErrors(err);
-                    }
-                },
-
-                onSuccess: () => {
-                    setName('');
-                    setCurrentModelForAdd(null);
-                    setErrors({});
-
-                    refreshPermissions();
-                },
-                onFinish: () => {
-                    setProcessingAdd(false);
-                },
-            },
-        );
-    };
-
-    const updatePermission = (permissionId: number, newVerb: string, model: string) => {
-        const errors = validatePermission(newVerb, model, permissionId);
-        if (errors) {
-            setErrors(errors);
-            return;
-        }
-        const updatedPermissionName = `${newVerb.trim().toLowerCase()}_${model}`;
-        setProcessingUpdate(true);
-
-        router.put(
-            route('permissions.update', permissionId),
-            { name: updatedPermissionName },
-            {
-                preserveScroll: true,
-                onError: (err) => setErrors(err),
-                onSuccess: () => {
-                    setEditingPermission(null);
-                    setHighlightedId(permissionId);
-                    setName('');
-                    setTimeout(() => setHighlightedId(null), 1500);
-
-                    refreshPermissions();
-                },
-                onFinish: () => {
-                    setProcessingUpdate(false);
-                },
-            },
-        );
-    };
-
-    const deletePermission = (permission: Permission) => (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!confirm('Are you sure you want to delete this permission?')) return;
-        setProcessingDelete(permission.id);
-        router.delete(route('permissions.destroy', { permission }), {
-            preserveScroll: true,
-            onError: (err) => setErrors(err),
-            onSuccess: () => refreshPermissions(),
-            onFinish: () => setProcessingDelete(null),
-        });
-    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

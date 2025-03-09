@@ -25,11 +25,11 @@ class PermissionController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('check.policy:viewAny', only: ['index']),
-            new Middleware('check.policy:view', only: ['show']),
-            new Middleware('check.policy:create', only: ['store']),
-            new Middleware('check.policy:update', only: ['update']),
-            new Middleware('check.policy:delete', only: ['destroy']),
+            new Middleware('check.policy:viewAny,App\Models\Permission', only: ['index']),
+            new Middleware('check.policy:view,App\Models\Permission', only: ['show']),
+            new Middleware('check.policy:create,App\Models\Permission', only: ['store']),
+            new Middleware('check.policy:update,App\Models\Permission', only: ['update']),
+            new Middleware('check.policy:delete,App\Models\Permission', only: ['destroy']),
         ];
     }
 

@@ -71,6 +71,12 @@
             "php vendor/bin/duster fix",
             "php vendor/bin/rector"
         ],
+        "style": [
+            "npm run format",
+            "npm run lint",
+            "php vendor/bin/duster fix",
+            "php vendor/bin/rector"
+        ],
         "lint": [
             "./vendor/bin/duster lint"
         ],

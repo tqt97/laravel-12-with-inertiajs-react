@@ -23,7 +23,7 @@ class UpdatePermissionRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:permissions,name,'.$this->permission->id,
-            'is_custon' => 'boolean',
+            'is_custom' => 'boolean',
         ];
     }
 

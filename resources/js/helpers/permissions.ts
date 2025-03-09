@@ -39,8 +39,14 @@ export function validatePermission(
     permissionId?: number,
 ): { name?: string; model?: string; permissionId?: string } | null {
     const errors: { name?: string; model?: string; permissionId?: string } = {};
-    if (!name.trim()) errors.name = 'Permission name is required';
-    if (model !== undefined && !model.trim()) errors.model = 'Model is required';
-    if (permissionId !== undefined && !permissionId) errors.permissionId = 'Permission ID is required';
+    if (!name.trim()) {
+        errors.name = 'Permission name is required';
+    }
+    if (model !== undefined && !model.trim()) {
+        errors.model = 'Model is required';
+    }
+    if (permissionId !== undefined && !permissionId) {
+        errors.permissionId = 'Permission ID is required';
+    }
     return Object.keys(errors).length ? errors : null;
 }

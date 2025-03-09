@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -49,6 +50,7 @@ class UserController extends Controller implements HasMiddleware
             'password' => 'required|confirmed',
         ]);
 
+        $data['password'] = Hash::make($data['password']);
         User::create($data);
 
         return redirect()->route('users.index')
