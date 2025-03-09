@@ -41,5 +41,7 @@ export interface User {
 
 export interface Permission {
     id: number;
-    name: string
+    name: string;
+    is_custom: boolean;
+    action?: string;
 }

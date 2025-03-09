@@ -1,1 +1,3 @@
 resources/js/components/ui/*
+./storage/debugbar/*
+./storage/*

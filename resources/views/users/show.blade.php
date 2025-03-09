@@ -7,8 +7,8 @@
         <h5 class="card-title">{{ $user->name }}</h5>
         <p class="card-text"><strong>Email:</strong> {{ $user->email }}</p>
         <p class="card-text"><strong>Vai trò:</strong>
-            @if($user->roles->isNotEmpty())
-                @foreach($user->roles as $role)
+            @if ($user->roles->isNotEmpty())
+                @foreach ($user->roles as $role)
                     <span class="badge badge-info">{{ $role->name }}</span>
                 @endforeach
             @else

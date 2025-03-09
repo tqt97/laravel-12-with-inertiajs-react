@@ -12,18 +12,19 @@ class CheckPolicyMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next, string $policyMethod): Response
     {
-        // Lấy tên Model từ Controller
+        // Get model name from Controller
         $controller = class_basename($request->route()->getController());
-        $modelClass = 'App\\Models\\' . str_replace('Controller', '', $controller);
+        $modelClass = 'App\\Models\\'.str_replace('Controller', '', $controller);
 
-        // Kiểm tra Policy
-        if (!Gate::allows($policyMethod, $modelClass)) {
+        // Check Policy
+        if (! Gate::allows($policyMethod, $modelClass)) {
             abort(Response::HTTP_FORBIDDEN, 'This action is unauthorized.');
         }
+
         return $next($request);
     }
 }

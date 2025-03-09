@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,16 +18,26 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         // Danh sách permission mẫu
         $permissions = [
-            'view users',
-            'create users',
-            'edit users',
-            'delete users',
-            'view users',
-            'create users',
-            'edit users',
-            'delete users',
-            'force-delete users',
-            'restore users',
+            'view_users',
+            'create_users',
+            'edit_users',
+            'delete_users',
+            'force-delete_users',
+            'restore_users',
+
+            'view_roles',
+            'create_roles',
+            'edit_roles',
+            'delete_roles',
+            'force-delete_roles',
+            'restore_roles',
+
+            'view_permissions',
+            'create_permissions',
+            'edit_permissions',
+            'delete_permissions',
+            'force-delete_permissions',
+            'restore_permissions',
         ];
 
         // Tạo hoặc lấy lại các permission
@@ -41,11 +51,11 @@ class DatabaseSeeder extends Seeder
 
         // Tạo role 'editor' với các permission hạn chế
         $editorRole = Role::firstOrCreate(['name' => 'editor']);
-        $editorRole->syncPermissions(['view users', 'create users', 'edit users']);
+        $editorRole->syncPermissions(['view_users', 'create_users', 'edit_users']);
 
         $user = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
-            ['name' => 'Admin User', 'password' => bcrypt('password')]
+            ['name' => 'Admin User', 'password' => bcrypt('12341234')]
         );
 
         // Gán role admin cho user
