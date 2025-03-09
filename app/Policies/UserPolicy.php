@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -17,7 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view users') || true;
+        return $user->hasPermissionTo('view_users');
     }
 
     /**
@@ -25,7 +24,7 @@ class UserPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo('view users') || true;
+        return $user->hasPermissionTo('view_users');
     }
 
     /**
@@ -33,7 +32,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create users') || true;
+        return $user->hasPermissionTo('create_users');
     }
 
     /**
@@ -41,7 +40,7 @@ class UserPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo('edit users');
+        return $user->hasPermissionTo('edit_users');
     }
 
     /**
@@ -49,7 +48,7 @@ class UserPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete users') || false;
+        return $user->hasPermissionTo('delete_users') || false;
     }
 
     /**
@@ -57,7 +56,7 @@ class UserPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo('restore users');
+        return $user->hasPermissionTo('restore_users');
     }
 
     /**
@@ -65,6 +64,6 @@ class UserPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo('force-delete users');
+        return $user->hasPermissionTo('force-delete_users');
     }
 }
