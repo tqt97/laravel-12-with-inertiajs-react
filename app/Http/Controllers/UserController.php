@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -27,6 +26,7 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User::with('roles')->paginate(10);
+
         return view('users.index', compact('users'));
     }
 
@@ -44,7 +44,7 @@ class UserController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
         ]);
@@ -77,8 +77,8 @@ class UserController extends Controller implements HasMiddleware
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$user->id,
         ]);
 
         $user->update($data);
