@@ -1,7 +1,6 @@
 import Heading from '@/components/heading';
 import { PermissionItem } from '@/components/permission/permission-item';
 import { AddPermissionModal } from '@/components/permission/permission-modal';
-import { Toast } from '@/components/toast';
 import { usePermissions } from '@/hooks/usePermissions';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Permission } from '@/types';
@@ -39,7 +38,6 @@ export default function Permission({ permissions }: { permissions: Permission[] 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="p-6">
                     <Heading title="Permissions" description="Manage permissions for your application" />
-                    <Toast />
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         {models.map((model) => (
                             <Disclosure defaultOpen key={model}>
