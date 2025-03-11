@@ -2,6 +2,7 @@ import { groupPermissionsByModel, validatePermission } from '@/helpers';
 import type { Permission } from '@/types';
 import { router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 export function usePermissions(permissions: Permission[]) {
     const [currentModelForAdd, setCurrentModelForAdd] = useState<string | null>(null);
@@ -50,12 +51,14 @@ export function usePermissions(permissions: Permission[]) {
                     } else {
                         setErrors(err);
                     }
+                    toast('Something went wrong');
                 },
                 onSuccess: () => {
                     setName('');
                     setCurrentModelForAdd(null);
                     setErrors({});
                     refreshPermissions();
+                    toast('Permission added successfully');
                 },
                 onFinish: () => setProcessingAdd(false),
             },
@@ -75,13 +78,17 @@ export function usePermissions(permissions: Permission[]) {
             { name: updatedPermissionName },
             {
                 preserveScroll: true,
-                onError: (err) => setErrors(err),
+                onError: (err) => {
+                    setErrors(err);
+                    toast('Something went wrong');
+                },
                 onSuccess: () => {
                     setEditingPermission(null);
                     setHighlightedId(permissionId);
                     setName('');
                     setTimeout(() => setHighlightedId(null), 1500);
                     refreshPermissions();
+                    toast('Permission updated successfully');
                 },
                 onFinish: () => setProcessingUpdate(false),
             },
@@ -94,8 +101,14 @@ export function usePermissions(permissions: Permission[]) {
         setProcessingDelete(permission.id);
         router.delete(route('permissions.destroy', { permission }), {
             preserveScroll: true,
-            onError: (err) => setErrors(err),
-            onSuccess: () => refreshPermissions(),
+            onError: (err) => {
+                setErrors(err);
+                toast('Something went wrong');
+            },
+            onSuccess: () => {
+                refreshPermissions();
+                toast('Permission deleted successfully');
+            },
             onFinish: () => setProcessingDelete(null),
         });
     };
