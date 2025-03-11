@@ -57,7 +57,7 @@ export function usePermissions(permissions: Permission[]) {
                     setName('');
                     setCurrentModelForAdd(null);
                     setErrors({});
-                    refreshPermissions();
+                    refreshPermissions()
                     toast('Permission added successfully');
                 },
                 onFinish: () => setProcessingAdd(false),
