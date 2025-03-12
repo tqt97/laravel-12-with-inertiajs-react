@@ -38,3 +38,19 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Permission {
+    id: number;
+    name: string;
+    is_custom: boolean;
+    action?: string;
+}
+
+export interface AppLayoutProps {
+    children: React.ReactNode;
+    breadcrumbs?: BreadcrumbItem[];
+}
+
+export interface FlashProps {
+    flash?: { success?: string; error?: string };
+}
