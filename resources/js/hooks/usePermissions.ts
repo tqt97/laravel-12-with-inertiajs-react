@@ -2,6 +2,7 @@ import { groupPermissionsByModel, validatePermission } from '@/helpers';
 import type { Permission } from '@/types';
 import { router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 export function usePermissions(permissions: Permission[]) {
     const [currentModelForAdd, setCurrentModelForAdd] = useState<string | null>(null);
@@ -46,6 +47,7 @@ export function usePermissions(permissions: Permission[]) {
                     } else {
                         setErrors(err);
                     }
+                    toast('Something went wrong');
                 },
                 onSuccess: () => {
                     setName('');
@@ -102,6 +104,7 @@ export function usePermissions(permissions: Permission[]) {
             onFinish: () => {
                 setProcessingDelete(null);
             },
+
         });
     };
 

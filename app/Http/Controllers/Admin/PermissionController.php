@@ -63,11 +63,12 @@ class PermissionController extends Controller implements HasMiddleware
         try {
             $this->permissionService->create($request->validated());
 
-            return to_route('permissions.index')->with('success', 'Permission created successfully');
+            return to_route('permissions.index');
         } catch (Throwable $e) {
             Log::error($e->getMessage());
 
             return to_route('permissions.index')->with('error', 'Failed to create permission');
+
         }
     }
 
@@ -83,12 +84,12 @@ class PermissionController extends Controller implements HasMiddleware
         try {
             $this->permissionService->update($permission, $request->validated());
 
-            return to_route('permissions.index')->with('success', 'Permission updated successfully');
+            return to_route('permissions.index');
 
         } catch (Throwable $e) {
             Log::error($e->getMessage());
 
-            return to_route('permissions.index')->withErrors(['error' => 'Failed to update permission']);
+            return to_route('permissions.index');
         }
     }
 
@@ -103,7 +104,7 @@ class PermissionController extends Controller implements HasMiddleware
         try {
             $this->permissionService->delete($permission);
 
-            return to_route('permissions.index')->with('success', 'Permission deleted successfully');
+            return to_route('permissions.index');
 
         } catch (Throwable $e) {
             Log::error($e->getMessage());
