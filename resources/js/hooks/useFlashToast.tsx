@@ -9,7 +9,9 @@ export const useFlashToast = () => {
     const { flash } = usePage().props as FlashProps;
 
     useEffect(() => {
-        if (!flash?.success && !flash?.error) return;
+        if (!flash?.success && !flash?.error) {
+            return;
+        }
 
         const text = flash.success || flash.error || '';
         let type: 'success' | 'error' | 'delete' = flash.error ? 'error' : 'success';
