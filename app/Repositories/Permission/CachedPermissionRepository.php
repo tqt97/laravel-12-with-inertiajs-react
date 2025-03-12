@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Permission;
 
 use App\Services\CacheService;
+use Illuminate\Database\Eloquent\Collection;
 
 class CachedPermissionRepository implements PermissionRepositoryInterface
 {
@@ -19,12 +20,12 @@ class CachedPermissionRepository implements PermissionRepositoryInterface
         $this->cacheTTL = self::DEFAULT_TTL ?? $this->cacheService->getDefaultTTL();
     }
 
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->cacheService->remember("{$this->cacheKeyPrefix}:all", $this->cacheTTL, fn () => $this->repository->getAll());
     }
 
-    public function getAllWithColumns(array $columns = ['*'])
+    public function getAllWithColumns(array $columns = ['*']): Collection
     {
         return $this->cacheService->remember("{$this->cacheKeyPrefix}:allWithColumns", $this->cacheTTL, fn () => $this->repository->getAllWithColumns($columns));
     }

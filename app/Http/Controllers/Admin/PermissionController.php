@@ -67,7 +67,8 @@ class PermissionController extends Controller implements HasMiddleware
         } catch (Throwable $e) {
             Log::error($e->getMessage());
 
-            return to_route('permissions.index');
+            return to_route('permissions.index')->with('error', 'Failed to create permission');
+
         }
     }
 
@@ -108,7 +109,7 @@ class PermissionController extends Controller implements HasMiddleware
         } catch (Throwable $e) {
             Log::error($e->getMessage());
 
-            return to_route('permissions.index');
+            return to_route('permissions.index')->with('error', 'Delete permission failed');
         }
     }
 }

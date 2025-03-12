@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Models\Permission;
 use App\Repositories\Permission\PermissionRepositoryInterface;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class PermissionService
@@ -33,7 +35,12 @@ class PermissionService
      */
     public function create(array $data): Permission
     {
-        return DB::transaction(fn () => $this->repository->create($data));
+        try {
+            return DB::transaction(fn () => $this->repository->create($data));
+        } catch (Throwable $e) {
+            Log::error('Error creating permission: '.$e->getMessage());
+            throw new Exception('Something went wrong !');
+        }
     }
 
     /**
@@ -47,7 +54,12 @@ class PermissionService
      */
     public function update(Permission $permission, array $data): bool
     {
-        return DB::transaction(fn () => $this->repository->update($permission, $data));
+        try {
+            return DB::transaction(fn () => $this->repository->update($permission, $data));
+        } catch (Throwable $e) {
+            Log::error('Error updating permission: '.$e->getMessage(), ['data' => $data]);
+            throw new Exception('Something went wrong !');
+        }
     }
 
     /**
@@ -60,6 +72,12 @@ class PermissionService
      */
     public function delete(Permission $permission): bool
     {
-        return DB::transaction(fn () => $this->repository->delete($permission));
+        try {
+            return DB::transaction(fn () => $this->repository->delete($permission));
+        } catch (Throwable $e) {
+            Log::error('Error deleted permission: '.$e->getMessage());
+            throw new Exception('Something went wrong !');
+        }
+
     }
 }

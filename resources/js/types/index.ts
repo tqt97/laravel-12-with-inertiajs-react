@@ -45,3 +45,12 @@ export interface Permission {
     is_custom: boolean;
     action?: string;
 }
+
+export interface AppLayoutProps {
+    children: React.ReactNode;
+    breadcrumbs?: BreadcrumbItem[];
+}
+
+export interface FlashProps {
+    flash?: { success?: string; error?: string };
+}
