@@ -156,3 +156,28 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* .custom-toast {
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+} */
+
+.custom-toast.success {
+    color: oklch(0.723 0.219 149.579) !important;
+    border: 1px solid oklch(0.925 0.084 155.995) !important;
+    font-weight: bold;
+}
+
+.custom-toast.error {
+    color: oklch(0.637 0.237 25.331) !important;
+    border: 1px solid oklch(0.885 0.062 18.334) !important;
+    /* background-color: oklch(0.637 0.237 25.331) !important; */
+    font-weight: bold;
+}
+
+.custom-toast.delete {
+    color: oklch(0.637 0.237 25.331) !important;
+    border: 1px solid oklch(0.885 0.062 18.334) !important;
+    font-weight: bold;
+}

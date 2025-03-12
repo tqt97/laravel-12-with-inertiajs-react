@@ -2,7 +2,6 @@ import { groupPermissionsByModel, validatePermission } from '@/helpers';
 import type { Permission } from '@/types';
 import { router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 export function usePermissions(permissions: Permission[]) {
     const [currentModelForAdd, setCurrentModelForAdd] = useState<string | null>(null);
@@ -27,10 +26,6 @@ export function usePermissions(permissions: Permission[]) {
         setProcessingDelete(null);
     };
 
-    const refreshPermissions = () => {
-        router.reload({ only: ['permissions'] });
-    };
-
     const addPermission = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const validationErrors = validatePermission(name, currentModelForAdd ?? undefined);
@@ -51,27 +46,26 @@ export function usePermissions(permissions: Permission[]) {
                     } else {
                         setErrors(err);
                     }
-                    toast('Something went wrong');
                 },
                 onSuccess: () => {
                     setName('');
                     setCurrentModelForAdd(null);
                     setErrors({});
-                    refreshPermissions()
-                    toast('Permission added successfully');
                 },
-                onFinish: () => setProcessingAdd(false),
+                onFinish: () => {
+                    setProcessingAdd(false);
+                },
             },
         );
     };
 
-    const updatePermission = (permissionId: number, newVerb: string, model: string) => {
-        const validationErrors = validatePermission(newVerb, model, permissionId);
+    const updatePermission = (permissionId: number, action: string, model: string) => {
+        const validationErrors = validatePermission(action, model, permissionId);
         if (validationErrors) {
             setErrors(validationErrors);
             return;
         }
-        const updatedPermissionName = `${newVerb.trim().toLowerCase()}_${model}`;
+        const updatedPermissionName = `${action.trim().toLowerCase()}_${model}`;
         setProcessingUpdate(true);
         router.put(
             route('permissions.update', permissionId),
@@ -80,36 +74,34 @@ export function usePermissions(permissions: Permission[]) {
                 preserveScroll: true,
                 onError: (err) => {
                     setErrors(err);
-                    toast('Something went wrong');
                 },
                 onSuccess: () => {
                     setEditingPermission(null);
                     setHighlightedId(permissionId);
                     setName('');
                     setTimeout(() => setHighlightedId(null), 1500);
-                    refreshPermissions();
-                    toast('Permission updated successfully');
                 },
-                onFinish: () => setProcessingUpdate(false),
+                onFinish: () => {
+                    setProcessingUpdate(false);
+                },
             },
         );
     };
 
     const deletePermission = (permission: Permission) => (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!confirm('Are you sure you want to delete this permission?')) return;
+        if (!confirm('Are you sure you want to delete this permission?')) {
+            return;
+        }
         setProcessingDelete(permission.id);
         router.delete(route('permissions.destroy', { permission }), {
             preserveScroll: true,
             onError: (err) => {
                 setErrors(err);
-                toast('Something went wrong');
             },
-            onSuccess: () => {
-                refreshPermissions();
-                toast('Permission deleted successfully');
+            onFinish: () => {
+                setProcessingDelete(null);
             },
-            onFinish: () => setProcessingDelete(null),
         });
     };
 
